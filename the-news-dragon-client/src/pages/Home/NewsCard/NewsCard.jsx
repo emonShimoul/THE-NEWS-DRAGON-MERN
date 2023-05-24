@@ -11,8 +11,8 @@ import {
   FaStar,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-// var Rating = require('react-rating');
-import Rating from "react-rating";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
 
 const NewsCard = ({ news }) => {
   const { _id, title, details, image_url, author, total_view, rating } = news;
@@ -46,15 +46,9 @@ const NewsCard = ({ news }) => {
         </Card.Text>
       </Card.Body>
       <Card.Footer className="text-muted d-flex">
-        <div className="flex-grow-1">
-          <Rating
-            placeholderRating={rating.number}
-            readonly
-            emptySymbol={<FaRegStar />}
-            placeholderSymbol={<FaStar className="text-danger" />}
-            fullSymbol={<FaStar />}
-          ></Rating>
-          <span>{rating?.number}</span>
+        <div className="flex-grow-1 d-flex align-items-center">
+          <Rating style={{ maxWidth: 100 }} value={rating?.number} readOnly />
+          <span className="ms-2">{rating?.number}</span>
         </div>
         <div>
           <FaEye></FaEye> {total_view}
