@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
+  const [accepted, setAccepted] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -16,6 +17,18 @@ const Register = () => {
     const password = form.password.value;
 
     console.log(name, photo, email, password);
+    createUser(email, password)
+      .then((result) => {
+        const createdUser = result.user;
+        console.log(createdUser);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleAccepted = (e) => {
+    setAccepted(e.target.checked);
   };
 
   return (
@@ -63,12 +76,17 @@ const Register = () => {
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check
+            onClick={handleAccepted}
             type="checkbox"
             name="accept"
-            label="Accept Terms and Conditions"
+            label={
+              <>
+                Accept <Link to="/terms">Terms and Conditions</Link>
+              </>
+            }
           />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" disabled={!accepted} type="submit">
           Register
         </Button>
         <br />
